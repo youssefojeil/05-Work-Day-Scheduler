@@ -25,6 +25,25 @@ div id = hour x+1 class row time-block past
 
 */
 
+// global variables
+var timeDisplayEl = $("#currentDay");
+var hour9 = $("#hour-9").children().eq(1);
+var hour10 = $("#hour-10").children().eq(1);
+var hour11 = $("#hour-11").children().eq(1);
+var hour12 = $("#hour-12").children().eq(1);
+var hour13 = $("#hour-13").children().eq(1);
+var hour14 = $("#hour-14").children().eq(1);
+var hour15 = $("#hour-15").children().eq(1);
+var hour16 = $("#hour-16").children().eq(1);
+var hour17 = $("#hour-17").children().eq(1);
+
+console.log(hour9);
+console.log(timeDisplayEl);
+
+var hour9Text = hour9.text();
+
+console.log(hour9Text);
+
 
 /* function for new event */
 function newEvent() {
@@ -33,7 +52,9 @@ function newEvent() {
 
 /* function to display events from storage */
 function displayStoredEvents() {
+    
     //$("#hour-12") = local Storage.getItem("hour-12")
+
 
 }
 
@@ -44,6 +65,9 @@ function storeEvent() {
 }
 
 /* function to display current time & day */
-function currentTime() {
+function displayTime() {
+    var rightNow = moment().format('dddd, MMMM Do');
+    timeDisplayEl.text(rightNow);
+  }
 
-}
+  displayTime();
