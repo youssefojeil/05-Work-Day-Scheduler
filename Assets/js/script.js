@@ -4,8 +4,6 @@ $(document).ready(function () {
     // variables for date and time
     var currentDate = $("#currentDay").text(moment().format("dddd, MMMM Do"));
     var currentHour = moment().hour();
-    console.log(currentHour);
-    console.log(currentDate.text());
 
     // get saved data from local storage & display on time blocks
     $("#hour-9 .description").val(localStorage.getItem("hour-9"));
@@ -21,14 +19,10 @@ $(document).ready(function () {
 
     // for each loop over time blocks
     $(".time-block").each(function () {
-        console.log($(this));
-        console.log(typeof($(this).attr("id"))); 
         // get id of each block remove hour- from string & store in blockhour
         var blockHour = $(this).attr("id").split("hour-")[1];
         // convert string to number 
         blockHour = parseInt(blockHour);
-        console.log(typeof(blockHour));
-        console.log("block hour is: " + blockHour + "\nCurrent Hour is: " + currentHour);
 
         // conditionals for current time & block time 
         // if block time <  current time then add past class
@@ -54,25 +48,17 @@ $(document).ready(function () {
     // assign saveBtn click listener for user input
     $(".saveBtn").on("click", function () {
 
-        console.log($("#notify").text())
-        // check current button click
-        console.log(this);
-        // taken the change from the sibling html description attribute
-        
-        console.log($(this).siblings());
-        console.log($(this).siblings(".description"));
+        // get value from text area by traversing from button clicked
+        // to the sibling element with class of description  
         var text = $(this).siblings(".description").val(); 
-        // taken the change from the parent html id attribute
-        
-        console.log($(this).siblings(".hour").text());
-        
+        // get id value from parent element of button clicked through id
         var time = $(this).parent().attr("id"); 
-        console.log(time);
+   
 
         // notify user that apointment was added
         $("#notify").text(`${text} was added to ${$(this).siblings(".hour").text()}`);
 
-        // set key pair of time & text to local storage.
+        // save key pair of time & text to local storage.
         localStorage.setItem(time, text);
     });
             
