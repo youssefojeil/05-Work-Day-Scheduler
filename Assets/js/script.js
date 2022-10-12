@@ -1,73 +1,79 @@
-/*
-GIVEN I am using a daily planner to create a schedule
-WHEN I open the planner
-THEN the current day is displayed at the top of the calendar
-WHEN I scroll down
-THEN I am presented with timeblocks for standard business hours
-WHEN I view the timeblocks for that day
-THEN each timeblock is color coded to indicate whether it is in the past, present, or future
-WHEN I click into a timeblock
-THEN I can enter an event
-WHEN I click the save button for that timeblock
-THEN the text for that event is saved in local storage
-WHEN I refresh the page
-THEN the saved events persist
-Current time block shiould be red color
-past time block will be grey color
-future time block will be green
+// check if css & html loaded first
+$(document).ready(function () {
 
-table
-time | user input | save button
- hour starts at 9 am
- hour ends at 17
-div id = hour x class row time-block past
-div id = hour x+1 class row time-block past 
+    // variables for date and time
+    var currentDate = $("#currentDay").text(moment().format("dddd, MMMM Do"));
+    var currentHour = moment().hour();
+    console.log(currentHour);
+    console.log(currentDate.text());
 
-*/
-
-// global variables
-var timeDisplayEl = $("#currentDay");
-var hour9 = $("#hour-9").children().eq(1);
-var hour10 = $("#hour-10").children().eq(1);
-var hour11 = $("#hour-11").children().eq(1);
-var hour12 = $("#hour-12").children().eq(1);
-var hour13 = $("#hour-13").children().eq(1);
-var hour14 = $("#hour-14").children().eq(1);
-var hour15 = $("#hour-15").children().eq(1);
-var hour16 = $("#hour-16").children().eq(1);
-var hour17 = $("#hour-17").children().eq(1);
-
-console.log(hour9);
-console.log(timeDisplayEl);
-
-var hour9Text = hour9.text();
-
-console.log(hour9Text);
+    // get saved data from local storage & display on time blocks
+    $("#hour-9 .description").val(localStorage.getItem("hour-9"));
+    $("#hour-10 .description").val(localStorage.getItem("hour-10"));
+    $("#hour-11 .description").val(localStorage.getItem("hour-11"));
+    $("#hour-12 .description").val(localStorage.getItem("hour-12"));
+    $("#hour-13 .description").val(localStorage.getItem("hour-13"));
+    $("#hour-14 .description").val(localStorage.getItem("hour-14"));
+    $("#hour-15 .description").val(localStorage.getItem("hour-15"));
+    $("#hour-16 .description").val(localStorage.getItem("hour-16"));
+    $("#hour-17 .description").val(localStorage.getItem("hour-17"));
 
 
-/* function for new event */
-function newEvent() {
+    // for each loop over time blocks
+    $(".time-block").each(function () {
+        console.log($(this));
+        console.log(typeof($(this).attr("id"))); 
+        // get id of each block remove hour- from string & store in blockhour
+        var blockHour = $(this).attr("id").split("hour-")[1];
+        // convert string to number 
+        blockHour = parseInt(blockHour);
+        console.log(typeof(blockHour));
+        console.log("block hour is: " + blockHour + "\nCurrent Hour is: " + currentHour);
 
-}
+        // conditionals for current time & block time 
+        // if block time <  current time then add past class
+        if (blockHour < currentHour) {
+            $(this).addClass("past");
+            $(this).removeClass("future");
+            $(this).removeClass("present");
+        }
+        // if block time = current time then add present class
+        else if (blockHour === currentHour) {
+            $(this).addClass("present");
+            $(this).removeClass("past");
+            $(this).removeClass("future");
+        }
+        // if neither option then add future class
+        else {
+            $(this).addClass("future");
+            $(this).removeClass("present");
+            $(this).removeClass("past");        
+        }
+    });
 
-/* function to display events from storage */
-function displayStoredEvents() {
-    
-    //$("#hour-12") = local Storage.getItem("hour-12")
+    // assign saveBtn click listener for user input
+    $(".saveBtn").on("click", function () {
 
+        console.log($("#notify").text())
+        // check current button click
+        console.log(this);
+        // taken the change from the sibling html description attribute
+        
+        console.log($(this).siblings());
+        console.log($(this).siblings(".description"));
+        var text = $(this).siblings(".description").val(); 
+        // taken the change from the parent html id attribute
+        
+        console.log($(this).siblings(".hour").text());
+        
+        var time = $(this).parent().attr("id"); 
+        console.log(time);
 
-}
+        // notify user that apointment was added
+        $("#notify").text(`${text} was added to ${$(this).siblings(".hour").text()}`);
 
-/* function save event to local storage */
-function storeEvent() {
-    // localStorage.setItem("hour-9")
-    // let hour11 = $("#hour-11").val().localStorage.setItem("hour-11", hour11);
-}
-
-/* function to display current time & day */
-function displayTime() {
-    var rightNow = moment().format('dddd, MMMM Do');
-    timeDisplayEl.text(rightNow);
-  }
-
-  displayTime();
+        // set key pair of time & text to local storage.
+        localStorage.setItem(time, text);
+    });
+            
+});
