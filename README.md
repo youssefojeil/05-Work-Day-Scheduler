@@ -39,4 +39,4 @@ Try it out here: [Work Day Scheduler](https://youssefojeil.github.io/05-Work-Day
 
 ## Images
 
-![Screenshot](./Assets/Images/Screenshot 2022-10-11 201608.png)
+![Screenshot](./Assets/Images/screenshot.png)
